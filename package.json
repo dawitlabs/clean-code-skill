@@ -1,0 +1,19 @@
+{
+  "name": "@dawitlabs/clean-code-skill",
+  "version": "3.0.0",
+  "description": "Clean code skill for Codex/agents",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "SKILL.md",
+    "references",
+    "bin",
+    "README.md"
+  ],
+  "bin": {
+    "clean-code-skill": "bin/install.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
