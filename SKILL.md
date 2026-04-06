@@ -205,7 +205,7 @@ Use this specifically when names are the primary issue.
 
 ### Example 1: Poor Naming → Clean Naming
 
-**Before:**
+**Java - Before:**
 ```java
 // BAD: Non-revealing names
 int d; // elapsed time in days
@@ -213,7 +213,7 @@ String yyyymmdstr;
 boolean flg;
 ```
 
-**After:**
+**Java - After:**
 ```java
 // GOOD: Intention-revealing names
 int elapsedTimeInDays;
@@ -221,11 +221,27 @@ String formattedDate;
 boolean isActive;
 ```
 
+**JavaScript - Before:**
+```javascript
+// BAD: Non-revealing names
+let d; // elapsed time in days
+let yyyymmdstr;
+let flg;
+```
+
+**JavaScript - After:**
+```javascript
+// GOOD: Intention-revealing names
+const elapsedTimeInDays;
+const formattedDate;
+let isActive;
+```
+
 ---
 
 ### Example 2: Large Function → Small Functions
 
-**Before:**
+**Java - Before:**
 ```java
 // BAD: Function doing multiple things, 50+ lines
 public void processUser(String userId, boolean sendEmail) {
@@ -237,7 +253,7 @@ public void processUser(String userId, boolean sendEmail) {
 }
 ```
 
-**After:**
+**Java - After:**
 ```java
 // GOOD: Each function does one thing
 public void processUser(String userId) {
@@ -253,11 +269,39 @@ private void notifyUserOfUpdate(User user) { }
 private void logUserActivity(User user, String action) { }
 ```
 
+**JavaScript - Before:**
+```javascript
+// BAD: Function doing multiple things, 50+ lines
+function processUser(userId, sendEmail) {
+    // validate user
+    // fetch from database
+    // update statistics
+    // send notification
+    // log activity
+}
+```
+
+**JavaScript - After:**
+```javascript
+// GOOD: Each function does one thing
+async function processUser(userId) {
+    const user = await validateAndFetchUser(userId);
+    await updateUserStatistics(user);
+    await notifyUserOfUpdate(user);
+    await logUserActivity(user, "updated");
+}
+
+async function validateAndFetchUser(userId) { }
+async function updateUserStatistics(user) { }
+async function notifyUserOfUpdate(user) { }
+async function logUserActivity(user, action) { }
+```
+
 ---
 
 ### Example 3: Flag Arguments → Separate Functions
 
-**Before:**
+**Java - Before:**
 ```java
 // BAD: Flag argument indicates multiple things
 public void processPayment(boolean isRefund) {
@@ -271,7 +315,7 @@ public void processPayment(boolean isRefund) {
 // Usage: processPayment(true); // What does true mean?
 ```
 
-**After:**
+**Java - After:**
 ```java
 // GOOD: Separate functions with clear names
 public void refundPayment() { }
@@ -282,11 +326,36 @@ refundPayment();
 chargePayment();
 ```
 
+**JavaScript - Before:**
+```javascript
+// BAD: Flag argument indicates multiple things
+function processPayment(isRefund) {
+    if (isRefund) {
+        // refund logic
+    } else {
+        // charge logic
+    }
+}
+
+// Usage: processPayment(true); // What does true mean?
+```
+
+**JavaScript - After:**
+```javascript
+// GOOD: Separate functions with clear names
+function refundPayment() { }
+function chargePayment() { }
+
+// Usage is clear:
+refundPayment();
+chargePayment();
+```
+
 ---
 
 ### Example 4: Redundant Comments → Clear Code
 
-**Before:**
+**Java - Before:**
 ```java
 // BAD: Comments restating the obvious
 // Check if employee is eligible for full benefits
@@ -295,10 +364,30 @@ if (employee.flags & HOURLY_FLAG && employee.age > 65) {
 }
 ```
 
-**After:**
+**Java - After:**
 ```java
 // GOOD: Extract explanatory variable
 boolean isEligibleForFullBenefits = 
+    employee.isHourly() && employee.isSenior();
+
+if (isEligibleForFullBenefits) {
+    // ...
+}
+```
+
+**JavaScript - Before:**
+```javascript
+// BAD: Comments restating the obvious
+// Check if employee is eligible for full benefits
+if (employee.flags & HOURLY_FLAG && employee.age > 65) {
+    // ...
+}
+```
+
+**JavaScript - After:**
+```javascript
+// GOOD: Extract explanatory variable
+const isEligibleForFullBenefits = 
     employee.isHourly() && employee.isSenior();
 
 if (isEligibleForFullBenefits) {
@@ -310,7 +399,7 @@ if (isEligibleForFullBenefits) {
 
 ### Example 5: Commented-Out Code → Delete
 
-**Before:**
+**Java - Before:**
 ```java
 // BAD: Commented-out code
 public void processOrder(Order order) {
@@ -324,10 +413,33 @@ public void processOrder(Order order) {
 }
 ```
 
-**After:**
+**Java - After:**
 ```java
 // GOOD: Deleted old code (it's in version control)
 public void processOrder(Order order) {
+    validateOrder(order);
+    processPayment(order);
+}
+```
+
+**JavaScript - Before:**
+```javascript
+// BAD: Commented-out code
+function processOrder(order) {
+    // Old validation logic - commented out
+    // if (order.total > 1000) {
+    //     applyDiscount(order);
+    // }
+    
+    validateOrder(order);
+    processPayment(order);
+}
+```
+
+**JavaScript - After:**
+```javascript
+// GOOD: Deleted old code (it's in version control)
+function processOrder(order) {
     validateOrder(order);
     processPayment(order);
 }
