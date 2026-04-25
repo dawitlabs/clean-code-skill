@@ -84,4 +84,4 @@ When used correctly, responses should be:
 
 ## License
 
-MIT
+MIT(what)
